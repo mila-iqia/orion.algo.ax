@@ -19,16 +19,14 @@ setup_args = dict(
     description="TODO",
     long_description=open(os.path.join(repo_root, "README.rst")).read(),
     license="BSD-3-Clause",
-    author=u"Epistimio",
+    author="Epistimio",
     author_email="xavier.bouthillier@mila.quebec",
     url="https://github.com/Epistimio/orion.algo.ax",
     packages=["orion.algo.ax"],
     package_dir={"": "src"},
     include_package_data=True,
     entry_points={
-        "BaseAlgorithm": [
-            "ax_AxOptimizer = orion.algo.ax.axoptimizer:AxOptimizer"
-        ],
+        "BaseAlgorithm": ["ax_AxOptimizer = orion.algo.ax.axoptimizer:AxOptimizer"],
     },
     install_requires=["orion>=0.1.15", "numpy"],
     tests_require=tests_require,
