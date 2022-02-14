@@ -4,8 +4,11 @@
 
 TODO: Write long description
 """
+from typing import Any, Dict, Optional
 import numpy
 from orion.algo.base import BaseAlgorithm
+
+from ax.service.ax_client import AxClient
 
 
 class AxOptimizer(BaseAlgorithm):
@@ -25,8 +28,23 @@ class AxOptimizer(BaseAlgorithm):
     requires_dist = None
     requires_shape = None
 
-    def __init__(self, space, seed=None):
-        super(AxOptimizer, self).__init__(space, seed=seed)
+    def __init__(self,
+                 space,
+                 generation_strategy: Optional["GenerationStrategy"] = None,
+                 enforce_sequential_optimization: bool = True,
+                 random_seed: Optional[int] = None,
+                 early_stopping_strategy: Optional["BaseEarlyStoppingStrategy"] = None,
+                 choose_generation_strategy_kwargs: Optional[Dict[str, Any]] = None):
+
+        self._client = AxClient(
+                 generation_strategy=generation_strategy,
+                 enforce_sequential_optimization=enforce_sequential_optimization,
+                 random_seed=random_seed,
+                 early_stopping_strategy=early_stopping_strategy)
+
+        self._experiment = self._client.create_experiment(choose_generation_strategy_kwargs=choose_generation_strategy_kwargs)
+
+        super(AxOptimizer, self).__init__(space, choose_generation_strategy_kwargs=choose_generation_strategy_kwargs)
 
     def seed_rng(self, seed):
         """Seed the state of the random number generator.
